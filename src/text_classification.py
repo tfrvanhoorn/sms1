@@ -14,6 +14,7 @@ from joblib import dump, load
 import matplotlib
 import matplotlib.pyplot as plt
 from text_preprocessing import _load_data
+import json
 
 #matplotlib.use('TkAgg')
 pd.set_option('display.max_colwidth', None)
@@ -87,6 +88,13 @@ def main():
     plt.title('Distribution by Classifier')
     plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     plt.savefig("output/accuracy_scores.png")
+
+    # Store metrics in JSON file
+    metrics = {
+        "accuracy": pred_scores['Decision Tree'][0]  # Using Decision Tree accuracy since it's our "best" classifier
+    }
+    with open('output/metrics.json', 'w') as metrics_file:
+        json.dump(metrics, metrics_file, indent=4)
 
     # Store "best" classifier
     dump(classifiers['Decision Tree'], 'output/model.joblib')
